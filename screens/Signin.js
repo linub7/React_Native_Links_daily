@@ -8,7 +8,7 @@ import AuthCommonLayout from '../components/auth/common-layout';
 import Footer from '../components/auth/Footer';
 import { StyleSheet } from 'react-native';
 
-const Signin = () => {
+const Signin = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState({
     email: '',
@@ -41,6 +41,8 @@ const Signin = () => {
     alert('Sign in Successfully');
   };
 
+  const handleNavigateToSignup = () => navigation.navigate('Signup');
+
   return (
     <AuthCommonLayout pageTitle={'Sign In'}>
       <UserInput
@@ -65,7 +67,7 @@ const Signin = () => {
       <Footer
         text={"Don't have an account?"}
         link={'Sign up'}
-        onPress={() => console.log('Navigate to sign up')}
+        onPress={handleNavigateToSignup}
       />
       <Text
         style={styles.forgotPassword}

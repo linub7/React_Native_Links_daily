@@ -7,7 +7,7 @@ import AuthCommonLayout from '../components/auth/common-layout';
 import { Text } from 'react-native';
 import Footer from '../components/auth/Footer';
 
-const Signup = () => {
+const Signup = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState({
     name: '',
@@ -41,6 +41,8 @@ const Signup = () => {
     alert('Sign up Successfully');
   };
 
+  const handleNavigateToSignin = () => navigation.navigate('Signin');
+
   return (
     <AuthCommonLayout pageTitle={'Sign Up'}>
       <UserInput
@@ -72,7 +74,7 @@ const Signup = () => {
       <Footer
         text={'Already Joined?'}
         link={'Sign in'}
-        onPress={() => console.log('Navigate to sign in')}
+        onPress={handleNavigateToSignin}
       />
     </AuthCommonLayout>
   );
