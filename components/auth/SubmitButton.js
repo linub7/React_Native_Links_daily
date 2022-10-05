@@ -1,11 +1,11 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Text from '@kaloraat/react-native-text';
 
-const SubmitButton = ({ label, onPress }) => {
+const SubmitButton = ({ label, onPress, loading }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text bold medium center>
-        {label}
+        {loading ? 'Please wait!Loading...' : label}
       </Text>
     </TouchableOpacity>
   );

@@ -1,16 +1,16 @@
 import { useState } from 'react';
+import Text from '@kaloraat/react-native-text';
 
 import UserInput from '../components/auth/UserInput';
 import SubmitButton from '../components/auth/SubmitButton';
-import { signupUser } from '../api/auth';
+import { signinUser } from '../api/auth';
 import AuthCommonLayout from '../components/auth/common-layout';
-import { Text } from 'react-native';
 import Footer from '../components/auth/Footer';
+import { StyleSheet } from 'react-native';
 
-const Signup = () => {
+const Signin = () => {
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState({
-    name: '',
     email: '',
     password: '',
   });
@@ -26,30 +26,23 @@ const Signup = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    const { name, email, password } = values;
-    if (!name || !email || !password) {
+    const { email, password } = values;
+    if (!email || !password) {
       alert('All Fields are required');
       setLoading(false);
       return;
     }
-    const { err, data } = await signupUser({ name, email, password });
+    const { err, data } = await signinUser({ email, password });
     if (err) {
       console.log(err);
       setLoading(false);
     }
-    console.log('Sign up successful', data);
-    alert('Sign up Successfully');
+    console.log('Sign in successful', data);
+    alert('Sign in Successfully');
   };
 
   return (
-    <AuthCommonLayout pageTitle={'Sign Up'}>
-      <UserInput
-        label={'Name'}
-        value={values?.name}
-        onChangeText={handleChangeInput.bind(this, 'name')}
-        autoCapitalize="words"
-        autoCorrect={false}
-      />
+    <AuthCommonLayout pageTitle={'Sign In'}>
       <UserInput
         label={'Email'}
         value={values?.email}
@@ -65,17 +58,32 @@ const Signup = () => {
         autoComplete="password"
       />
       <SubmitButton
-        label={'Sign Up'}
+        label={'Sign In'}
         onPress={handleSubmit}
         loading={loading}
       />
       <Footer
-        text={'Already Joined?'}
-        link={'Sign in'}
-        onPress={() => console.log('Navigate to sign in')}
+        text={"Don't have an account?"}
+        link={'Sign up'}
+        onPress={() => console.log('Navigate to sign up')}
       />
+      <Text
+        style={styles.forgotPassword}
+        small
+        center
+        color="orange"
+        onPress={() => {}}
+      >
+        Forgot Password?
+      </Text>
     </AuthCommonLayout>
   );
 };
 
-export default Signup;
+const styles = StyleSheet.create({
+  forgotPassword: {
+    marginTop: 10,
+  },
+});
+
+export default Signin;
