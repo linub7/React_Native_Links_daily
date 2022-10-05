@@ -2,7 +2,7 @@ import axios from 'axios';
 export const signupUser = async (values) => {
   try {
     const { data } = await axios.post(
-      `http://localhost:8000/api/v1/signup`,
+      `http://192.168.103.123:8000/api/v1/register`,
       values
     );
     return { data };
@@ -15,7 +15,7 @@ export const signupUser = async (values) => {
 export const signinUser = async (values) => {
   try {
     const { data } = await axios.post(
-      `http://localhost:8000/api/v1/signin`,
+      `http://192.168.103.123:8000/api/v1/login`,
       values
     );
     return { data };

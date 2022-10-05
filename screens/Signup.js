@@ -36,8 +36,10 @@ const Signup = ({ navigation }) => {
     if (err) {
       console.log(err);
       setLoading(false);
+      return;
     }
     console.log('Sign up successful', data);
+    setLoading(false);
     alert('Sign up Successfully');
   };
 

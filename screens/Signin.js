@@ -7,6 +7,7 @@ import { signinUser } from '../api/auth';
 import AuthCommonLayout from '../components/auth/common-layout';
 import Footer from '../components/auth/Footer';
 import { StyleSheet } from 'react-native';
+import axios from 'axios';
 
 const Signin = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -32,12 +33,15 @@ const Signin = ({ navigation }) => {
       setLoading(false);
       return;
     }
+
     const { err, data } = await signinUser({ email, password });
     if (err) {
       console.log(err);
       setLoading(false);
+      return;
     }
     console.log('Sign in successful', data);
+    setLoading(false);
     alert('Sign in Successfully');
   };
 
