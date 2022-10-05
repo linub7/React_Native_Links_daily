@@ -1,10 +1,8 @@
-import axios from 'axios';
+import client from '../client';
+
 export const signupUser = async (values) => {
   try {
-    const { data } = await axios.post(
-      `http://192.168.103.123:8000/api/v1/register`,
-      values
-    );
+    const { data } = await client.post(`/register`, values);
     return { data };
   } catch (error) {
     const { response } = error;
@@ -14,10 +12,7 @@ export const signupUser = async (values) => {
 
 export const signinUser = async (values) => {
   try {
-    const { data } = await axios.post(
-      `http://192.168.103.123:8000/api/v1/login`,
-      values
-    );
+    const { data } = await client.post(`/login`, values);
     return { data };
   } catch (error) {
     const { response } = error;

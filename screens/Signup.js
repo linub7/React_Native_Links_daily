@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { useToast } from 'react-native-toast-notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import UserInput from '../components/auth/UserInput';
 import SubmitButton from '../components/auth/SubmitButton';
 import { signupUser } from '../api/auth';
 import AuthCommonLayout from '../components/auth/common-layout';
-import { Text } from 'react-native';
 import Footer from '../components/auth/Footer';
 
 const Signup = ({ navigation }) => {
@@ -14,6 +15,8 @@ const Signup = ({ navigation }) => {
     email: '',
     password: '',
   });
+
+  const toast = useToast();
 
   const handleChangeInput = (identifier, enteredText) => {
     setValues((currentValues) => {
@@ -27,20 +30,28 @@ const Signup = ({ navigation }) => {
   const handleSubmit = async () => {
     setLoading(true);
     const { name, email, password } = values;
-    if (!name || !email || !password) {
-      alert('All Fields are required');
+    if (!name || !email || !password || password.length < 6) {
+      toast.show(
+        'All Fields are required and password must be at least 6 character',
+        { type: 'danger' }
+      );
+
       setLoading(false);
       return;
     }
     const { err, data } = await signupUser({ name, email, password });
     if (err) {
+      toast.show(err?.error, { type: 'danger' });
       console.log(err);
       setLoading(false);
       return;
     }
     console.log('Sign up successful', data);
+    const { success, ...rest } = data;
+    // save response to async storage
+    await AsyncStorage.setItem('@auth', JSON.stringify(rest));
+    toast.show('Sign in Successful', { type: 'success' });
     setLoading(false);
-    alert('Sign up Successfully');
   };
 
   const handleNavigateToSignin = () => navigation.navigate('Signin');

@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import Text from '@kaloraat/react-native-text';
+import { StyleSheet } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import UserInput from '../components/auth/UserInput';
 import SubmitButton from '../components/auth/SubmitButton';
 import { signinUser } from '../api/auth';
 import AuthCommonLayout from '../components/auth/common-layout';
 import Footer from '../components/auth/Footer';
-import { StyleSheet } from 'react-native';
-import axios from 'axios';
 
 const Signin = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -15,6 +16,8 @@ const Signin = ({ navigation }) => {
     email: '',
     password: '',
   });
+
+  const toast = useToast();
 
   const handleChangeInput = (identifier, enteredText) => {
     setValues((currentValues) => {
@@ -28,8 +31,12 @@ const Signin = ({ navigation }) => {
   const handleSubmit = async () => {
     setLoading(true);
     const { email, password } = values;
-    if (!email || !password) {
-      alert('All Fields are required');
+    if (!email || !password || password.length < 6) {
+      toast.show(
+        'All Fields are required and password must be at least 6 character',
+        { type: 'danger' }
+      );
+
       setLoading(false);
       return;
     }
@@ -37,12 +44,16 @@ const Signin = ({ navigation }) => {
     const { err, data } = await signinUser({ email, password });
     if (err) {
       console.log(err);
+      toast.show(err?.error, { type: 'danger' });
       setLoading(false);
       return;
     }
     console.log('Sign in successful', data);
+    const { success, ...rest } = data;
+    // save response to async storage
+    await AsyncStorage.setItem('@auth', JSON.stringify(rest));
+    toast.show('Sign in Successful', { type: 'success' });
     setLoading(false);
-    alert('Sign in Successfully');
   };
 
   const handleNavigateToSignup = () => navigation.navigate('Signup');
