@@ -5,6 +5,9 @@ import Signup from '../screens/Signup';
 import Home from '../screens/Home';
 import { useAuth } from '../hooks';
 import HeaderTabs from '../components/nav/header/HeaderTabs';
+import Account from '../screens/Account';
+import Links from '../screens/Links';
+import Post from '../screens/Post';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,25 +19,54 @@ const ScreensNav = () => {
   return (
     <Stack.Navigator initialRouteName="Home">
       {isAuthenticated ? (
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            title: 'Links Daily',
-            headerTitleAlign: 'center',
-            headerRight: () => <HeaderTabs />,
-          }}
-        />
+        <>
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{
+              title: 'Links Daily',
+              headerTitleAlign: 'center',
+              headerRight: () => <HeaderTabs />,
+            }}
+          />
+          <Stack.Screen
+            name="Account"
+            component={Account}
+            options={{
+              title: 'Account',
+              headerTitleAlign: 'center',
+              headerRight: () => <HeaderTabs />,
+            }}
+          />
+          <Stack.Screen
+            name="Links"
+            component={Links}
+            options={{
+              title: 'Links',
+              headerTitleAlign: 'center',
+              headerRight: () => <HeaderTabs />,
+            }}
+          />
+          <Stack.Screen
+            name="Post"
+            component={Post}
+            options={{
+              title: 'Post',
+              headerTitleAlign: 'center',
+              headerRight: () => <HeaderTabs />,
+            }}
+          />
+        </>
       ) : (
         <>
           <Stack.Screen
-            name="Signup"
-            component={Signup}
+            name="Signin"
+            component={Signin}
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="Signin"
-            component={Signin}
+            name="Signup"
+            component={Signup}
             options={{ headerShown: false }}
           />
         </>

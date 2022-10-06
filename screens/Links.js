@@ -1,12 +1,16 @@
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import Text from '@kaloraat/react-native-text';
 import FooterTabs from '../components/nav/footer/FooterTabs';
 
 const Links = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.text}>Links</Text>
-      <FooterTabs />
+      <ScrollView>
+        <Text>Links</Text>
+      </ScrollView>
+      <View>
+        <FooterTabs />
+      </View>
     </SafeAreaView>
   );
 };
@@ -14,10 +18,6 @@ const Links = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
-  },
-  text: {
-    marginTop: 20,
   },
 });
 

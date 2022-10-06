@@ -1,9 +1,9 @@
 import { Image, StyleSheet, View } from 'react-native';
 
-const CircleLogo = () => {
+const CircleLogo = ({ img }) => {
   return (
     <View style={styles.container}>
-      <Image source={require('../../assets/logo.png')} style={styles.image} />
+      <Image source={img} style={styles.image} />
     </View>
   );
 };
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 300,
-    height: 200,
+    height: 220,
     marginVertical: 20,
   },
 });

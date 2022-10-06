@@ -1,10 +1,13 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Text from '@kaloraat/react-native-text';
 
-const SubmitButton = ({ label, onPress, loading }) => {
+const SubmitButton = ({ label, onPress, loading, additionalStyle = {} }) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Text bold medium center>
+    <TouchableOpacity
+      style={[styles.container, additionalStyle]}
+      onPress={onPress}
+    >
+      <Text bold medium center style={styles.text}>
         {loading ? 'Loading...' : label}
       </Text>
     </TouchableOpacity>
@@ -19,6 +22,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 15,
     borderRadius: 18,
+  },
+  text: {
+    color: 'white',
   },
 });
 

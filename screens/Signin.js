@@ -50,7 +50,6 @@ const Signin = ({ navigation }) => {
       setLoading(false);
       return;
     }
-    console.log('Sign in successful', data);
     const { success, ...rest } = data;
     // save response to async storage
     await AsyncStorage.setItem('@auth', JSON.stringify(rest));

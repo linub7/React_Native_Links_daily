@@ -7,7 +7,7 @@ const AuthCommonLayout = ({ children, pageTitle }) => {
   return (
     <KeyboardAwareScrollView contentContainerStyle={styles.container}>
       <View style={styles.innerContainer}>
-        <CircleLogo />
+        <CircleLogo img={require('../../../assets/logo.png')} />
         <Text title center>
           {pageTitle}
         </Text>
