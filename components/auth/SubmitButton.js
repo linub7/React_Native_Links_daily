@@ -5,7 +5,7 @@ const SubmitButton = ({ label, onPress, loading }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text bold medium center>
-        {loading ? 'Please wait!Loading...' : label}
+        {loading ? 'Loading...' : label}
       </Text>
     </TouchableOpacity>
   );

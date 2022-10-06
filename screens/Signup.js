@@ -57,7 +57,6 @@ const Signup = ({ navigation }) => {
       token: rest?.token,
       user: rest?.user,
     });
-    toast.show('Sign in Successful', { type: 'success' });
     setLoading(false);
     navigation.navigate('Home');
   };

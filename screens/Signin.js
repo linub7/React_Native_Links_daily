@@ -18,8 +18,7 @@ const Signin = ({ navigation }) => {
     password: '123456',
   });
 
-  const { auth, setAuth } = useAuth();
-  console.log(auth);
+  const { setAuth } = useAuth();
   const toast = useToast();
 
   const handleChangeInput = (identifier, enteredText) => {
@@ -60,7 +59,6 @@ const Signin = ({ navigation }) => {
       token: rest?.token,
       user: rest?.user,
     });
-    toast.show('Sign in Successful', { type: 'success' });
     setLoading(false);
     navigation.navigate('Home');
   };
