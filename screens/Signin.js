@@ -9,14 +9,17 @@ import SubmitButton from '../components/auth/SubmitButton';
 import { signinUser } from '../api/auth';
 import AuthCommonLayout from '../components/auth/common-layout';
 import Footer from '../components/auth/Footer';
+import { useAuth } from '../hooks';
 
 const Signin = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState({
-    email: '',
-    password: '',
+    email: 'linub7@gmail.com',
+    password: '123456',
   });
 
+  const { auth, setAuth } = useAuth();
+  console.log(auth);
   const toast = useToast();
 
   const handleChangeInput = (identifier, enteredText) => {
@@ -52,8 +55,14 @@ const Signin = ({ navigation }) => {
     const { success, ...rest } = data;
     // save response to async storage
     await AsyncStorage.setItem('@auth', JSON.stringify(rest));
+    // save in context
+    setAuth({
+      token: rest?.token,
+      user: rest?.user,
+    });
     toast.show('Sign in Successful', { type: 'success' });
     setLoading(false);
+    navigation.navigate('Home');
   };
 
   const handleNavigateToSignup = () => navigation.navigate('Signup');

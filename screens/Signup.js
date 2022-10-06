@@ -7,6 +7,7 @@ import SubmitButton from '../components/auth/SubmitButton';
 import { signupUser } from '../api/auth';
 import AuthCommonLayout from '../components/auth/common-layout';
 import Footer from '../components/auth/Footer';
+import { useAuth } from '../hooks';
 
 const Signup = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -16,6 +17,7 @@ const Signup = ({ navigation }) => {
     password: '',
   });
 
+  const { setAuth } = useAuth();
   const toast = useToast();
 
   const handleChangeInput = (identifier, enteredText) => {
@@ -50,8 +52,14 @@ const Signup = ({ navigation }) => {
     const { success, ...rest } = data;
     // save response to async storage
     await AsyncStorage.setItem('@auth', JSON.stringify(rest));
+    // save in context
+    setAuth({
+      token: rest?.token,
+      user: rest?.user,
+    });
     toast.show('Sign in Successful', { type: 'success' });
     setLoading(false);
+    navigation.navigate('Home');
   };
 
   const handleNavigateToSignin = () => navigation.navigate('Signin');
