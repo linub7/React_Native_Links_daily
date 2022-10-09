@@ -29,3 +29,17 @@ export const logoutUser = async () => {
     return { err: response?.data };
   }
 };
+
+export const updateUserPassword = async (password, token) => {
+  try {
+    const { data } = await client.put(
+      `/update-password`,
+      { password },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

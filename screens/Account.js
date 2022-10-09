@@ -11,7 +11,7 @@ import UserInput from '../components/auth/UserInput';
 import SubmitButton from '../components/auth/SubmitButton';
 import * as ImagePicker from 'expo-image-picker';
 import { updateProfilePhoto } from '../api/user';
-import { logoutUser } from '../api/auth';
+import { logoutUser, updateUserPassword } from '../api/auth';
 
 const Account = () => {
   const { auth, setAuth } = useAuth();
@@ -25,7 +25,27 @@ const Account = () => {
   const handleChangePassword = (enteredPassword) =>
     setPassword(enteredPassword);
 
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    if (!password || password.length < 6) {
+      toast.show(
+        'Password is Required & You have to entered at least 6 character',
+        { type: 'warning' }
+      );
+      return;
+    }
+    setLoading(true);
+    const { err, data } = await updateUserPassword(password, auth?.token);
+    if (err) {
+      console.log(err);
+      toast.show(err, { type: 'danger' });
+      setLoading(false);
+      return;
+    }
+    console.log(data);
+    setLoading(false);
+    setPassword('');
+    toast.show('Password updated successfully ✅', { type: 'success' });
+  };
 
   const handleLogout = async () => {
     setAuth({
@@ -135,7 +155,6 @@ const Account = () => {
         <SubmitButton
           label={'Logout'}
           onPress={handleLogout}
-          loading={loading}
           additionalStyle={{ backgroundColor: 'red' }}
         />
       </ScrollView>
