@@ -16,6 +16,8 @@ const ScreensNav = () => {
 
   const isAuthenticated = auth?.token !== '' && auth?.user !== null;
 
+  console.log({ isAuthenticated });
+
   return (
     <Stack.Navigator initialRouteName="Home">
       {isAuthenticated ? (

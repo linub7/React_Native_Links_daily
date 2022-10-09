@@ -19,3 +19,13 @@ export const signinUser = async (values) => {
     return { err: response?.data };
   }
 };
+
+export const logoutUser = async () => {
+  try {
+    const { data } = await client.get(`/logout`);
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

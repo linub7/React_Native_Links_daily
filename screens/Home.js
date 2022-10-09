@@ -7,12 +7,9 @@ import {
 } from 'react-native';
 import Text from '@kaloraat/react-native-text';
 
-import { useAuth } from '../hooks';
 import FooterTabs from '../components/nav/footer/FooterTabs';
 
-const Home = ({ navigation }) => {
-  const { auth } = useAuth();
-
+const Home = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>

@@ -6,23 +6,23 @@ import ScreensNav from './routes/ScreensNav';
 
 const RootNavigation = () => {
   return (
-    <AuthProvider>
-      <ToastProvider
-        placement="top"
-        duration={2000}
-        animationType="zoom-in"
-        animationDuration={250}
-        successColor="green"
-        dangerColor="red"
-        warningColor="orange"
-        normalColor="gray"
-        offsetTop={60}
-      >
-        <NavigationContainer>
+    <NavigationContainer>
+      <AuthProvider>
+        <ToastProvider
+          placement="top"
+          duration={2000}
+          animationType="zoom-in"
+          animationDuration={250}
+          successColor="green"
+          dangerColor="red"
+          warningColor="orange"
+          normalColor="gray"
+          offsetTop={60}
+        >
           <ScreensNav />
-        </NavigationContainer>
-      </ToastProvider>
-    </AuthProvider>
+        </ToastProvider>
+      </AuthProvider>
+    </NavigationContainer>
   );
 };
 
