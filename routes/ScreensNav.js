@@ -8,6 +8,7 @@ import HeaderTabs from '../components/nav/header/HeaderTabs';
 import Account from '../screens/Account';
 import Links from '../screens/Links';
 import Post from '../screens/Post';
+import ForgotPassword from '../screens/ForgotPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,8 +16,6 @@ const ScreensNav = () => {
   const { auth } = useAuth();
 
   const isAuthenticated = auth?.token !== '' && auth?.user !== null;
-
-  console.log({ isAuthenticated });
 
   return (
     <Stack.Navigator initialRouteName="Home">
@@ -69,6 +68,11 @@ const ScreensNav = () => {
           <Stack.Screen
             name="Signup"
             component={Signup}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ForgotPassword"
+            component={ForgotPassword}
             options={{ headerShown: false }}
           />
         </>

@@ -43,3 +43,23 @@ export const updateUserPassword = async (password, token) => {
     return { err: response?.data };
   }
 };
+
+export const forgotUserPassword = async (email) => {
+  try {
+    const { data } = await client.post(`/forgot-password`, { email });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const resetUserPassword = async (values) => {
+  try {
+    const { data } = await client.put(`/reset-password`, values);
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

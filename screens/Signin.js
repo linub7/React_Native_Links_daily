@@ -62,7 +62,7 @@ const Signin = ({ navigation }) => {
     navigation.navigate('Home');
   };
 
-  const handleNavigateToSignup = () => navigation.navigate('Signup');
+  const handleNavigate = (path) => navigation.navigate(path);
 
   return (
     <AuthCommonLayout pageTitle={'Sign In'}>
@@ -88,14 +88,14 @@ const Signin = ({ navigation }) => {
       <Footer
         text={"Don't have an account?"}
         link={'Sign up'}
-        onPress={handleNavigateToSignup}
+        onPress={() => handleNavigate('Signup')}
       />
       <Text
         style={styles.forgotPassword}
         small
         center
         color="orange"
-        onPress={() => {}}
+        onPress={() => handleNavigate('ForgotPassword')}
       >
         Forgot Password?
       </Text>
