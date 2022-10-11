@@ -7,7 +7,6 @@ const PreviewCard = ({
   ogDescription = 'No Description Found',
   ogImage = { url: 'https://via.placeholder.com/500x500.png?text=Image' },
 }) => {
-  console.log({ ogImage });
   return (
     <View style={styles.container}>
       <Image source={{ uri: ogImage?.url }} style={styles.image} />

@@ -13,14 +13,21 @@ import ogs from '@uehreka/open-graph-scraper-react-native';
 import FooterTabs from '../components/nav/footer/FooterTabs';
 import SubmitButton from '../components/auth/SubmitButton';
 import PreviewCard from '../components/post/PreviewCard';
+import { useToast } from 'react-native-toast-notifications';
+import { createLink } from '../api/link';
+import { useAuth, useLinks } from '../hooks';
 
-const Post = () => {
+const Post = ({ navigation }) => {
   const [values, setValues] = useState({
     link: '',
     title: '',
   });
   const [loading, setLoading] = useState(false);
   const [urlPreview, setUrlPreview] = useState({});
+
+  const toast = useToast();
+  const { auth } = useAuth();
+  const { links, setLinks } = useLinks();
 
   const handleChange = async (text) => {
     try {
@@ -34,7 +41,6 @@ const Post = () => {
 
       if (urlRegex({ strict: false }).test(text)) {
         ogs({ url: text }, (error, results, response) => {
-          console.log(results);
           if (results.success) {
             setUrlPreview(results);
           }
@@ -49,8 +55,31 @@ const Post = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log({ values });
+  const handleSubmit = async () => {
+    if (!values.link || !values.title) {
+      toast.show('Please provide correct link & title 😊', { type: 'warning' });
+      return;
+    }
+    setLoading(true);
+    const payload = {
+      link: values.link,
+      title: values.title,
+      urlPreview,
+    };
+    const { err, data } = await createLink(payload, auth?.token);
+    if (err) {
+      console.log(err);
+      toast.show(err?.error, { type: 'danger' });
+      setLoading(false);
+      return;
+    }
+    setLoading(false);
+    setLinks([data?.link, ...links]);
+    // update link context
+    setTimeout(() => {
+      toast.show('Link posted successfully 👌', { type: 'success' });
+    }, 1000);
+    navigation.navigate('Home');
   };
 
   return (
