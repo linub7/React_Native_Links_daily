@@ -9,6 +9,7 @@ import Account from '../screens/Account';
 import Links from '../screens/Links';
 import Post from '../screens/Post';
 import ForgotPassword from '../screens/ForgotPassword';
+import LinkView from '../screens/LinkView';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,6 +56,13 @@ const ScreensNav = () => {
               title: 'Post',
               headerTitleAlign: 'center',
               headerRight: () => <HeaderTabs />,
+            }}
+          />
+          <Stack.Screen
+            name="LinkView"
+            component={LinkView}
+            options={{
+              title: '',
             }}
           />
         </>

@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import Text from '@kaloraat/react-native-text';
 
@@ -13,7 +14,7 @@ import { getLinks } from '../api/link';
 import { useLinks } from '../hooks';
 import LinkItem from '../components/post/LinkItem';
 
-const Home = ({ route }) => {
+const Home = ({ route, navigation }) => {
   const { links, setLinks } = useLinks();
 
   useEffect(() => {
@@ -29,6 +30,8 @@ const Home = ({ route }) => {
     setLinks(data?.links);
   };
 
+  const handleNavigate = (item) => navigation.navigate('LinkView', { item });
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -36,7 +39,11 @@ const Home = ({ route }) => {
           Recent Links
         </Text>
         {links?.map((item) => (
-          <LinkItem key={item._id} item={item} />
+          <LinkItem
+            item={item}
+            key={item._id}
+            onPress={() => handleNavigate(item)}
+          />
         ))}
       </ScrollView>
       <View>
