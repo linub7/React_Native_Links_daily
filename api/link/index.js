@@ -35,3 +35,31 @@ export const increaseLinkViewCount = async (linkId, token) => {
     return { err: response?.data };
   }
 };
+
+export const manageLikeLink = async (linkId, token) => {
+  try {
+    const { data } = await client.put(
+      `/links/like/${linkId}`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const manageUnLikeLink = async (linkId, token) => {
+  try {
+    const { data } = await client.put(
+      `/links/unlike/${linkId}`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

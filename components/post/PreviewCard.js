@@ -1,8 +1,10 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from '@kaloraat/react-native-text';
 import { Image } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import IconContainer from './IconContainer';
+import { useAuth, useLinks } from '../../hooks';
+import { manageLikeLink, manageUnLikeLink } from '../../api/link';
+import { useToast } from 'react-native-toast-notifications';
 
 const PreviewCard = ({
   ogTitle = 'Untitled',
@@ -11,7 +13,64 @@ const PreviewCard = ({
   views,
   likes,
   showIcons = false,
+  id,
 }) => {
+  const { auth } = useAuth();
+  const { links, setLinks } = useLinks();
+
+  const toast = useToast();
+
+  const isLiked =
+    likes !== undefined &&
+    likes.length > 0 &&
+    likes?.find((el) => el.toString() === auth.user._id.toString()) !==
+      undefined
+      ? true
+      : false;
+
+  const handleLike = async (id) => {
+    const { err, data } = await manageLikeLink(id, auth?.token);
+
+    if (err) {
+      console.log(err);
+      toast.show(err, { type: 'danger' });
+      return;
+    }
+
+    if (data?.like) {
+      setLinks(() => {
+        const linkIdx = links.findIndex(
+          (link) => link._id.toString() === id.toString()
+        );
+        links[linkIdx]?.likes?.push(auth?.user?._id);
+        return [...links];
+      });
+    }
+  };
+
+  const handleUnlike = async (id) => {
+    const { err, data } = await manageUnLikeLink(id, auth?.token);
+
+    if (err) {
+      console.log(err);
+      toast.show(err, { type: 'danger' });
+      return;
+    }
+
+    if (data?.unlike) {
+      setLinks(() => {
+        const linkIdx = links?.findIndex(
+          (link) => link._id.toString() === id.toString()
+        );
+        const likeIdx = links[linkIdx]?.likes?.findIndex(
+          (el) => el.toString() === auth?.user._id
+        );
+        links[linkIdx]?.likes?.splice(likeIdx, 1);
+        return [...links];
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Image source={{ uri: ogImage?.url }} style={styles.image} />
@@ -22,9 +81,21 @@ const PreviewCard = ({
             <IconContainer icon={'eye'} text={views} />
           </View>
 
-          <TouchableOpacity style={styles.heartContainer}>
-            <IconContainer icon={'heart'} text={likes?.length} />
-          </TouchableOpacity>
+          {isLiked ? (
+            <TouchableOpacity
+              style={styles.heartContainer}
+              onPress={() => handleUnlike(id)}
+            >
+              <IconContainer icon={'heart'} text={likes?.length} />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.heartContainer}
+              onPress={() => handleLike(id)}
+            >
+              <IconContainer icon={'heart-outline'} text={likes?.length} />
+            </TouchableOpacity>
+          )}
         </>
       )}
 

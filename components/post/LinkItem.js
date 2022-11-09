@@ -3,7 +3,7 @@ import Text from '@kaloraat/react-native-text';
 import PreviewCard from './PreviewCard';
 import { StyleSheet } from 'react-native';
 
-const LinkItem = ({ item, onPress = () => {} }) => {
+const LinkItem = ({ item, onPress = () => {}, handleManageLike }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
@@ -14,6 +14,7 @@ const LinkItem = ({ item, onPress = () => {} }) => {
           views={item?.views}
           likes={item?.likes}
           showIcons={true}
+          id={item?._id}
         />
       </View>
     </TouchableOpacity>
