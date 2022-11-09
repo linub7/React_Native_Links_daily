@@ -1,15 +1,32 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from '@kaloraat/react-native-text';
 import { Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import IconContainer from './IconContainer';
 
 const PreviewCard = ({
   ogTitle = 'Untitled',
   ogDescription = 'No Description Found',
   ogImage = { url: 'https://via.placeholder.com/500x500.png?text=Image' },
+  views,
+  likes,
+  showIcons = false,
 }) => {
   return (
     <View style={styles.container}>
       <Image source={{ uri: ogImage?.url }} style={styles.image} />
+
+      {showIcons && (
+        <>
+          <View style={styles.eyeContainer}>
+            <IconContainer icon={'eye'} text={views} />
+          </View>
+
+          <TouchableOpacity style={styles.heartContainer}>
+            <IconContainer icon={'heart'} text={likes?.length} />
+          </TouchableOpacity>
+        </>
+      )}
 
       <TouchableOpacity>
         <View style={styles.textContainer}>
@@ -42,6 +59,16 @@ const styles = StyleSheet.create({
   image: {
     height: '70%',
     width: '100%',
+  },
+  eyeContainer: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+  },
+  heartContainer: {
+    position: 'absolute',
+    top: 20,
+    right: 80,
   },
   textContainer: {
     padding: 5,

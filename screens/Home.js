@@ -33,6 +33,17 @@ const Home = ({ route, navigation }) => {
 
   const handleNavigate = async (item) => {
     await increaseLinkViewCount(item._id, auth?.token);
+
+    // update link in the context
+    setLinks(() => {
+      const linkIdx = links.findIndex(
+        (link) => link._id.toString() === item._id.toString()
+      );
+      links[linkIdx] = { ...links[linkIdx], views: links[linkIdx].views + 1 };
+      return [...links];
+    });
+
+    //redirect
     navigation.navigate('LinkView', { item });
   };
 

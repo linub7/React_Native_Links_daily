@@ -11,6 +11,9 @@ const LinkItem = ({ item, onPress = () => {} }) => {
           ogDescription={item?.urlPreview?.ogDescription}
           ogImage={item?.urlPreview?.ogImage}
           ogTitle={item?.title}
+          views={item?.views}
+          likes={item?.likes}
+          showIcons={true}
         />
       </View>
     </TouchableOpacity>
