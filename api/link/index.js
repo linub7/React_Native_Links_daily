@@ -21,3 +21,17 @@ export const getLinks = async () => {
     return { err: response?.data };
   }
 };
+
+export const increaseLinkViewCount = async (linkId, token) => {
+  try {
+    const { data } = await client.put(
+      `/view-count/${linkId}`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

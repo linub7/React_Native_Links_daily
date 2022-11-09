@@ -10,11 +10,12 @@ import Text from '@kaloraat/react-native-text';
 
 import FooterTabs from '../components/nav/footer/FooterTabs';
 import { useEffect } from 'react';
-import { getLinks } from '../api/link';
-import { useLinks } from '../hooks';
+import { getLinks, increaseLinkViewCount } from '../api/link';
+import { useAuth, useLinks } from '../hooks';
 import LinkItem from '../components/post/LinkItem';
 
 const Home = ({ route, navigation }) => {
+  const { auth } = useAuth();
   const { links, setLinks } = useLinks();
 
   useEffect(() => {
@@ -30,7 +31,10 @@ const Home = ({ route, navigation }) => {
     setLinks(data?.links);
   };
 
-  const handleNavigate = (item) => navigation.navigate('LinkView', { item });
+  const handleNavigate = async (item) => {
+    await increaseLinkViewCount(item._id, auth?.token);
+    navigation.navigate('LinkView', { item });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
