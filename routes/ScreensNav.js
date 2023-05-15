@@ -10,6 +10,7 @@ import Links from '../screens/Links';
 import Post from '../screens/Post';
 import ForgotPassword from '../screens/ForgotPassword';
 import LinkView from '../screens/LinkView';
+import UserProfile from '../screens/UserProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -65,6 +66,7 @@ const ScreensNav = () => {
               title: '',
             }}
           />
+          <Stack.Screen name="UserProfile" component={UserProfile} />
         </>
       ) : (
         <>

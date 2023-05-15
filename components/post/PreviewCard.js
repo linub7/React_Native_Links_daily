@@ -5,6 +5,8 @@ import IconContainer from './IconContainer';
 import { useAuth, useLinks } from '../../hooks';
 import { manageLikeLink, manageUnLikeLink } from '../../api/link';
 import { useToast } from 'react-native-toast-notifications';
+import moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
 
 const PreviewCard = ({
   ogTitle = 'Untitled',
@@ -14,16 +16,19 @@ const PreviewCard = ({
   likes,
   showIcons = false,
   id,
+  postedBy,
+  createdAt,
 }) => {
   const { auth } = useAuth();
   const { links, setLinks } = useLinks();
 
+  const navigation = useNavigation();
   const toast = useToast();
 
   const isLiked =
     likes !== undefined &&
     likes.length > 0 &&
-    likes?.find((el) => el.toString() === auth.user._id.toString()) !==
+    likes?.find((el) => el.toString() === auth?.user?._id.toString()) !==
       undefined
       ? true
       : false;
@@ -33,8 +38,7 @@ const PreviewCard = ({
 
     if (err) {
       console.log(err);
-      toast.show(err, { type: 'danger' });
-      return;
+      return toast.show(err?.error, { type: 'danger' });
     }
 
     if (data?.like) {
@@ -53,7 +57,7 @@ const PreviewCard = ({
 
     if (err) {
       console.log(err);
-      toast.show(err, { type: 'danger' });
+      toast.show(err?.error, { type: 'danger' });
       return;
     }
 
@@ -69,6 +73,10 @@ const PreviewCard = ({
         return [...links];
       });
     }
+  };
+
+  const handleNavigateToUserProfile = () => {
+    navigation.navigate('UserProfile', { user: postedBy._id });
   };
 
   return (
@@ -96,6 +104,20 @@ const PreviewCard = ({
               <IconContainer icon={'heart-outline'} text={likes?.length} />
             </TouchableOpacity>
           )}
+
+          <View style={styles.calendarContainer}>
+            <IconContainer
+              icon={'ios-calendar-outline'}
+              text={moment(createdAt).fromNow()}
+            />
+          </View>
+
+          <TouchableOpacity
+            style={styles.userContainer}
+            onPress={handleNavigateToUserProfile}
+          >
+            <IconContainer icon={'person-outline'} text={postedBy?.name} />
+          </TouchableOpacity>
         </>
       )}
 
@@ -140,6 +162,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     right: 80,
+  },
+  calendarContainer: {
+    position: 'absolute',
+    top: 20,
+    left: 80,
+  },
+  userContainer: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
   },
   textContainer: {
     padding: 5,

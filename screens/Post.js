@@ -74,8 +74,8 @@ const Post = ({ navigation }) => {
       return;
     }
     setLoading(false);
-    setLinks([data?.link, ...links]);
     // update link context
+    setLinks([data?.link, ...links]);
     setTimeout(() => {
       toast.show('Link posted successfully 👌', { type: 'success' });
     }, 1000);

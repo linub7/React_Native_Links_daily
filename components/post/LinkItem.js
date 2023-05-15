@@ -1,5 +1,4 @@
 import { TouchableOpacity, View } from 'react-native';
-import Text from '@kaloraat/react-native-text';
 import PreviewCard from './PreviewCard';
 import { StyleSheet } from 'react-native';
 
@@ -15,6 +14,8 @@ const LinkItem = ({ item, onPress = () => {}, handleManageLike }) => {
           likes={item?.likes}
           showIcons={true}
           id={item?._id}
+          postedBy={item?.postedBy}
+          createdAt={item?.createdAt}
         />
       </View>
     </TouchableOpacity>
