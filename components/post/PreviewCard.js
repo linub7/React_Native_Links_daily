@@ -1,12 +1,14 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from '@kaloraat/react-native-text';
 import { Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useToast } from 'react-native-toast-notifications';
+import moment from 'moment';
+
 import IconContainer from './IconContainer';
 import { useAuth, useLinks } from '../../hooks';
 import { manageLikeLink, manageUnLikeLink } from '../../api/link';
-import { useToast } from 'react-native-toast-notifications';
-import moment from 'moment';
-import { useNavigation } from '@react-navigation/native';
+import { toCapitalizeWord } from '../../utils/general';
 
 const PreviewCard = ({
   ogTitle = 'Untitled',
@@ -28,7 +30,7 @@ const PreviewCard = ({
   const isLiked =
     likes !== undefined &&
     likes.length > 0 &&
-    likes?.find((el) => el.toString() === auth?.user?._id.toString()) !==
+    likes?.find((el) => el.toString() === auth?.user?._id?.toString()) !==
       undefined
       ? true
       : false;
@@ -43,8 +45,8 @@ const PreviewCard = ({
 
     if (data?.like) {
       setLinks(() => {
-        const linkIdx = links.findIndex(
-          (link) => link._id.toString() === id.toString()
+        const linkIdx = links?.findIndex(
+          (link) => link?._id?.toString() === id.toString()
         );
         links[linkIdx]?.likes?.push(auth?.user?._id);
         return [...links];
@@ -64,10 +66,10 @@ const PreviewCard = ({
     if (data?.unlike) {
       setLinks(() => {
         const linkIdx = links?.findIndex(
-          (link) => link._id.toString() === id.toString()
+          (link) => link?._id?.toString() === id?.toString()
         );
         const likeIdx = links[linkIdx]?.likes?.findIndex(
-          (el) => el.toString() === auth?.user._id
+          (el) => el.toString() === auth?.user?._id
         );
         links[linkIdx]?.likes?.splice(likeIdx, 1);
         return [...links];
@@ -76,12 +78,19 @@ const PreviewCard = ({
   };
 
   const handleNavigateToUserProfile = () => {
-    navigation.navigate('UserProfile', { user: postedBy._id });
+    navigation.navigate('UserProfile', {
+      user: postedBy._id,
+      name: postedBy?.name,
+    });
   };
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: ogImage?.url }} style={styles.image} />
+      <Image
+        source={{ uri: ogImage?.url }}
+        style={styles.image}
+        blurRadius={3}
+      />
 
       {showIcons && (
         <>
@@ -116,7 +125,10 @@ const PreviewCard = ({
             style={styles.userContainer}
             onPress={handleNavigateToUserProfile}
           >
-            <IconContainer icon={'person-outline'} text={postedBy?.name} />
+            <IconContainer
+              icon={'person-outline'}
+              text={toCapitalizeWord(postedBy?.name)}
+            />
           </TouchableOpacity>
         </>
       )}

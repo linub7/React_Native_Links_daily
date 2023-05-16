@@ -152,11 +152,6 @@ const Account = () => {
           onPress={handleSubmit}
           loading={loading}
         />
-        <SubmitButton
-          label={'Logout'}
-          onPress={handleLogout}
-          additionalStyle={{ backgroundColor: 'red' }}
-        />
       </ScrollView>
       <View>
         <FooterTabs />

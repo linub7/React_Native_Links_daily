@@ -11,6 +11,7 @@ import Post from '../screens/Post';
 import ForgotPassword from '../screens/ForgotPassword';
 import LinkView from '../screens/LinkView';
 import UserProfile from '../screens/UserProfile';
+import { toCapitalizeWord } from '../utils/general';
 
 const Stack = createNativeStackNavigator();
 
@@ -66,7 +67,20 @@ const ScreensNav = () => {
               title: '',
             }}
           />
-          <Stack.Screen name="UserProfile" component={UserProfile} />
+          <Stack.Screen
+            name="UserProfile"
+            component={UserProfile}
+            options={({ route }) => ({
+              title: toCapitalizeWord(route?.params?.name),
+              headerTitleAlign: 'center',
+              headerTransparent: true,
+              headerTitleStyle: {
+                color: 'white',
+                fontSize: 40,
+              },
+              headerRight: () => <HeaderTabs />,
+            })}
+          />
         </>
       ) : (
         <>

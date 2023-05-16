@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  SafeAreaView,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
 import Text from '@kaloraat/react-native-text';
 
 import FooterTabs from '../components/nav/footer/FooterTabs';
@@ -37,7 +30,7 @@ const Home = ({ route, navigation }) => {
     // update link in the context
     setLinks(() => {
       const linkIdx = links.findIndex(
-        (link) => link._id.toString() === item._id.toString()
+        (link) => link?._id?.toString() === item?._id?.toString()
       );
       links[linkIdx] = { ...links[linkIdx], views: links[linkIdx].views + 1 };
       return [...links];
