@@ -12,9 +12,9 @@ export const createLink = async (values, token) => {
   }
 };
 
-export const getLinks = async (token) => {
+export const getLinks = async (token, pageNumber) => {
   try {
-    const { data } = await client.get(`/links`, {
+    const { data } = await client.get(`/links?pageNumber=${pageNumber}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return { data };
@@ -105,6 +105,18 @@ export const deleteMyLink = async (linkId, token) => {
 export const getTrendingAndLatestLinks = async (token) => {
   try {
     const { data } = await client.get(`/links/trending-latest`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const getLinksCount = async (token) => {
+  try {
+    const { data } = await client.get(`/links/count`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return { data };

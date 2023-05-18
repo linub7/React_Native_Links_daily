@@ -1,5 +1,4 @@
-const { createContext, useState, useEffect } = require('react');
-import AsyncStorage from '@react-native-async-storage/async-storage';
+const { createContext, useState } = require('react');
 
 const LinkContext = createContext();
 

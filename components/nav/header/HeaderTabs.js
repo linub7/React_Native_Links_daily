@@ -2,17 +2,19 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAuth } from '../../../hooks';
+import { useAuth, useLinks } from '../../../hooks';
 import { logoutUser } from '../../../api/auth';
 
 const HeaderTabs = () => {
   const { setAuth } = useAuth();
+  const { setLinks } = useLinks();
 
   const signoutHandler = async () => {
     setAuth({
       token: '',
       user: null,
     });
+    setLinks([]);
     await AsyncStorage.removeItem('@auth');
     await logoutUser();
   };

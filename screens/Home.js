@@ -1,27 +1,51 @@
 import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
 import Text from '@kaloraat/react-native-text';
+import { useEffect, useState } from 'react';
 
 import FooterTabs from '../components/nav/footer/FooterTabs';
-import { useEffect } from 'react';
-import { getLinks, increaseLinkViewCount } from '../api/link';
+import { getLinks, getLinksCount, increaseLinkViewCount } from '../api/link';
 import { useAuth, useLinks } from '../hooks';
 import LinkItem from '../components/post/LinkItem';
+import SubmitButton from '../components/auth/SubmitButton';
 
 const Home = ({ route, navigation }) => {
+  const [loading, setLoading] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [linksCount, setLinksCount] = useState(0);
   const { auth } = useAuth();
   const { links, setLinks } = useLinks();
 
   useEffect(() => {
     handleGetLinks();
-  }, []);
+  }, [pageNumber]);
 
   const handleGetLinks = async () => {
-    const { err, data } = await getLinks(auth?.token);
+    setLoading(true);
+    const { err, data } = await getLinks(auth?.token, pageNumber);
     if (err) {
       console.log(err);
+      setLoading(false);
       return;
     }
-    setLinks(data?.links);
+    setLoading(false);
+    console.log('data from getLinks: ', data?.links);
+    data?.links?.forEach((element) => setLinks((prev) => [...prev, element]));
+  };
+
+  useEffect(() => {
+    handleGetLinksCount();
+  }, []);
+
+  const handleGetLinksCount = async () => {
+    setLoading(true);
+    const { err, data } = await getLinksCount(auth?.token);
+    if (err) {
+      console.log(err);
+      setLoading(false);
+      return;
+    }
+    setLoading(false);
+    setLinksCount(data?.count);
   };
 
   const handleNavigate = async (item) => {
@@ -46,6 +70,7 @@ const Home = ({ route, navigation }) => {
         <Text title center light style={styles.title}>
           Recent Links
         </Text>
+
         {links?.map((item) => (
           <LinkItem
             item={item}
@@ -53,6 +78,13 @@ const Home = ({ route, navigation }) => {
             onPress={() => handleNavigate(item)}
           />
         ))}
+        {links?.length !== linksCount ? (
+          <SubmitButton
+            loading={loading}
+            label={'Load more'}
+            onPress={() => setPageNumber((prev) => prev + 1)}
+          />
+        ) : null}
       </ScrollView>
       <View>
         <FooterTabs />
