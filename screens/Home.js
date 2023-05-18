@@ -16,7 +16,7 @@ const Home = ({ route, navigation }) => {
   }, []);
 
   const handleGetLinks = async () => {
-    const { err, data } = await getLinks();
+    const { err, data } = await getLinks(auth?.token);
     if (err) {
       console.log(err);
       return;

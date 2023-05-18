@@ -25,6 +25,8 @@ const LinkItem = ({ item, onPress = () => {}, handleManageLike }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    width: 400,
+    height: 300,
   },
 });
 

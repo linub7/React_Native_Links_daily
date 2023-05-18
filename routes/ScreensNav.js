@@ -12,6 +12,8 @@ import ForgotPassword from '../screens/ForgotPassword';
 import LinkView from '../screens/LinkView';
 import UserProfile from '../screens/UserProfile';
 import { toCapitalizeWord } from '../utils/general';
+import HeaderLeft from '../components/nav/header/HeaderLeft';
+import Trending from '../screens/Trending';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +33,7 @@ const ScreensNav = () => {
               title: 'Links Daily',
               headerTitleAlign: 'center',
               headerRight: () => <HeaderTabs />,
+              headerLeft: () => <HeaderLeft />,
             }}
           />
           <Stack.Screen
@@ -84,6 +87,16 @@ const ScreensNav = () => {
               },
               headerRight: () => <HeaderTabs />,
             })}
+          />
+          <Stack.Screen
+            name="Trending"
+            component={Trending}
+            options={{
+              title: '',
+              headerTitleAlign: 'center',
+              headerTransparent: true,
+              headerRight: () => <HeaderTabs />,
+            }}
           />
         </>
       ) : (

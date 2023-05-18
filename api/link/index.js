@@ -12,9 +12,11 @@ export const createLink = async (values, token) => {
   }
 };
 
-export const getLinks = async () => {
+export const getLinks = async (token) => {
   try {
-    const { data } = await client.get(`/links`);
+    const { data } = await client.get(`/links`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return { data };
   } catch (error) {
     const { response } = error;
@@ -91,6 +93,18 @@ export const updateMyLink = async (linkId, token) => {
 export const deleteMyLink = async (linkId, token) => {
   try {
     const { data } = await client.delete(`/links/${linkId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const getTrendingAndLatestLinks = async (token) => {
+  try {
+    const { data } = await client.get(`/links/trending-latest`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return { data };
