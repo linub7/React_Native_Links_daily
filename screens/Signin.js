@@ -59,6 +59,7 @@ const Signin = ({ navigation }) => {
       user: rest?.user,
     });
     setLoading(false);
+    toast.show('Welcome back', { type: 'success' });
     navigation.navigate('Home');
   };
 

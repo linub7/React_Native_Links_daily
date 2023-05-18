@@ -63,3 +63,39 @@ export const manageUnLikeLink = async (linkId, token) => {
     return { err: response?.data };
   }
 };
+
+export const getMyLinks = async (token) => {
+  try {
+    const { data } = await client.get(`/links/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const updateMyLink = async (linkId, token) => {
+  try {
+    const { data } = await client.put(`/links/${linkId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};
+
+export const deleteMyLink = async (linkId, token) => {
+  try {
+    const { data } = await client.delete(`/links/${linkId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return { data };
+  } catch (error) {
+    const { response } = error;
+    return { err: response?.data };
+  }
+};

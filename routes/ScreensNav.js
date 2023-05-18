@@ -46,8 +46,12 @@ const ScreensNav = () => {
             name="Links"
             component={Links}
             options={{
-              title: 'Links',
+              title: 'My Links',
               headerTitleAlign: 'center',
+              headerTransparent: true,
+              headerTitleStyle: {
+                fontSize: 20,
+              },
               headerRight: () => <HeaderTabs />,
             }}
           />

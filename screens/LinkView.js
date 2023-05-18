@@ -1,7 +1,4 @@
-import { SafeAreaView, View } from 'react-native';
-import Text from '@kaloraat/react-native-text';
 import { WebView } from 'react-native-webview';
-import { StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
