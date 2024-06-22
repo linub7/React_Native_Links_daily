@@ -1,4 +1,10 @@
-import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  ScrollView,
+  Image,
+} from 'react-native';
 import Text from '@kaloraat/react-native-text';
 import { useEffect, useState } from 'react';
 
@@ -7,11 +13,14 @@ import { getLinks, getLinksCount, increaseLinkViewCount } from '../api/link';
 import { useAuth, useLinks } from '../hooks';
 import LinkItem from '../components/post/LinkItem';
 import SubmitButton from '../components/auth/SubmitButton';
+import SearchComponent from '../components/search';
+import LoadingGif from '../components/loading-gif';
 
 const Home = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [linksCount, setLinksCount] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
   const { auth } = useAuth();
   const { links, setLinks } = useLinks();
 
@@ -27,9 +36,9 @@ const Home = ({ route, navigation }) => {
       setLoading(false);
       return;
     }
-    setLoading(false);
     console.log('data from getLinks: ', data?.links);
     data?.links?.forEach((element) => setLinks((prev) => [...prev, element]));
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -37,14 +46,11 @@ const Home = ({ route, navigation }) => {
   }, []);
 
   const handleGetLinksCount = async () => {
-    setLoading(true);
     const { err, data } = await getLinksCount(auth?.token);
     if (err) {
       console.log(err);
-      setLoading(false);
       return;
     }
-    setLoading(false);
     setLinksCount(data?.count);
   };
 
@@ -64,32 +70,40 @@ const Home = ({ route, navigation }) => {
     navigation.navigate('LinkView', { item });
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text title center light style={styles.title}>
-          Recent Links
-        </Text>
+  const searched = (keyword) => (item) =>
+    item?.title?.toLowerCase()?.includes(keyword?.toLowerCase());
 
-        {links?.map((item) => (
-          <LinkItem
-            item={item}
-            key={item._id}
-            onPress={() => handleNavigate(item)}
-          />
-        ))}
-        {links?.length !== linksCount ? (
-          <SubmitButton
-            loading={loading}
-            label={'Load more'}
-            onPress={() => setPageNumber((prev) => prev + 1)}
-          />
-        ) : null}
-      </ScrollView>
-      <View>
-        <FooterTabs />
-      </View>
-    </SafeAreaView>
+  if (loading) return <LoadingGif source={require('../assets/loading.gif')} />;
+
+  return (
+    <>
+      <SearchComponent value={searchTerm} setValue={setSearchTerm} />
+      <SafeAreaView style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text title center light style={styles.title}>
+            Recent Links
+          </Text>
+
+          {links?.filter(searched(searchTerm)).map((item) => (
+            <LinkItem
+              item={item}
+              key={item._id}
+              onPress={() => handleNavigate(item)}
+            />
+          ))}
+          {links?.length !== linksCount ? (
+            <SubmitButton
+              loading={loading}
+              label={'Load more'}
+              onPress={() => setPageNumber((prev) => prev + 1)}
+            />
+          ) : null}
+        </ScrollView>
+        <View>
+          <FooterTabs />
+        </View>
+      </SafeAreaView>
+    </>
   );
 };
 
